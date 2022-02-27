@@ -52,5 +52,43 @@ log(iter.next());
 log(iter.next());
 log(iter.next());
 log(iter.next());
+// {}에서 value는 값, done키는 다음 값의 존재 유무에 따라 false, true
+// for..of문은 done의 값이 true가 될때까지 순회하다가 멈춤
 
 // 사용자 정의 이터러블을 통해 알아보기
+const _iterable = {
+  [Symbol.iterator]() {
+    let i = 3;
+    return {
+      next() {
+        return i === 0 ? { done: true } : { value: i--, done: false };
+      },
+      // 자기 자신 또한 이터러블일 경우에도 이터레이터를 반환
+      [Symbol.iterator]() {
+        return this;
+      },
+    };
+  },
+};
+
+const _iterator = _iterable[Symbol.iterator]();
+// _iterator.next();
+// _iterator.next();
+// _iterator.next();
+// _iterator.next();
+for (const a of _iterable) log(a);
+
+const arr2 = [1, 2, 3];
+let _iter2 = arr2[Symbol.iterator]();
+for (const a of arr2) log(a);
+for (const a of _iter2) log(a);
+
+// html에서도 가능
+for (const a of document.querySelectorAll("*")) log(a);
+const all = document.querySelectorAll("*");
+const _iter3 = all[Symbol.iterator]();
+_iter3.next();
+_iter3.next();
+_iter3.next();
+
+// 전개 연산자
