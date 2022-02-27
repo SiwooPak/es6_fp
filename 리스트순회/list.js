@@ -84,11 +84,15 @@ for (const a of arr2) log(a);
 for (const a of _iter2) log(a);
 
 // html에서도 가능
-for (const a of document.querySelectorAll("*")) log(a);
-const all = document.querySelectorAll("*");
-const _iter3 = all[Symbol.iterator]();
-_iter3.next();
-_iter3.next();
-_iter3.next();
+// for (const a of document.querySelectorAll("*")) log(a);
+// const all = document.querySelectorAll("*");
+// const _iter3 = all[Symbol.iterator]();
+// _iter3.next();
+// _iter3.next();
+// _iter3.next();
 
 // 전개 연산자
+console.clear();
+const a = [1, 2];
+log([...a, ...[3, 4]]);
+log([...a, ...arr, ...set, ...map.keys()]);
