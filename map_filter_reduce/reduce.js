@@ -17,7 +17,7 @@ for (const n of nums) {
 }
 log(total);
 
-const reduce = (func, acc, iter) => {
+const _reduce = (func, acc, iter) => {
   if (!iter) {
     iter = acc[Symbol.iterator]();
     acc = iter.next().value; // iterator는 {value, done}
@@ -42,11 +42,11 @@ const reduce = (func, acc, iter) => {
   //   }
 };
 const add = (a, b) => a + b;
-log(reduce(add, 0, nums));
-log(reduce(add, [1, 2, 3]));
+log(_reduce(add, 0, nums));
+log(_reduce(add, [1, 2, 3]));
 
 log(
-  reduce(
+  _reduce(
     (total_price, product) => total_price + product.price,
     0,
     products
