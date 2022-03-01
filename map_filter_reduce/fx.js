@@ -1,5 +1,7 @@
 const log = console.log;
 
+const add = (a, b) => a + b;
+
 const _map = (func, iter) => {
   let result = [];
   for (const a of iter) {
@@ -27,4 +29,4 @@ const _reduce = (func, acc, iter) => {
   return acc;
 };
 
-module.exports = { log, _map, _filter, _reduce };
+module.exports = { add, log, _map, _filter, _reduce };
