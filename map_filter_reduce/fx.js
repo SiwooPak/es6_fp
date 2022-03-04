@@ -41,4 +41,13 @@ const _pipe =
   (...args) =>
     _go(f(...args), ...func);
 
-module.exports = { add, log, _map, _filter, _reduce, _go, _pipe };
+module.exports = {
+  add,
+  log,
+  _map,
+  _filter,
+  _reduce,
+  _go,
+  _pipe,
+  _curry,
+};

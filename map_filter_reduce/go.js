@@ -89,6 +89,7 @@ _go(
 const base_total_price = (predi) =>
   _pipe(_filter(predi), total_price);
 log("공통된 부분을 함수로 처리해서 go()의 가독성 높이기");
+
 _go(
   products,
   base_total_price((p) => p.price < 20000),
