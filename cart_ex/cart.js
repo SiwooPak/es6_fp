@@ -17,9 +17,6 @@ const products = [
 ];
 //console.table(products);
 
-// 합계 함수
-const add = (a, b) => a + b;
-
 // 상품의 총수량
 const total_qty = _pipe(
   _map((p) => p.qty),
