@@ -51,3 +51,14 @@ _range()를 싱핼했을 때 배열로 즉시 평가가 됨
 L._range()의 경우 일반적으로 대기상태였다가 내부의 값을 순회할때 함수가 실행됨.
 두 함수를 시간을 비교하면 지연성이 있는 함수의 실행속도가 더 빠름.
 */
+
+console.clear();
+// test
+log("=== test ===");
+const test = (name, time, f) => {
+  console.time(name);
+  while (time--) f();
+  console.timeEnd(name);
+};
+test("_range", 10, () => _reduce(add, _range(10000000)));
+test("L._range", 10, () => L._range(add, L._range(10000000)));
