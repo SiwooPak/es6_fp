@@ -41,6 +41,11 @@ const _pipe =
   (...args) =>
     _go(f(...args), ...func);
 
+// 요소와 문자를 연결시켜주는 함수
+const _join = _curry((sep, iter) =>
+  _reduce((a, b) => `${a}${sep}${b}`, iter)
+);
+
 module.exports = {
   add,
   log,

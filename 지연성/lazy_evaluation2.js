@@ -2,10 +2,13 @@ const {
   _filter,
   _take,
   _map,
+  _reduce,
   _range,
   _go,
+  _pipe,
   log,
   L,
+  _curry,
 } = require("../lib/fx");
 
 // range, map, filter, take, reduce 중첩사용
@@ -29,3 +32,48 @@ _go(
   log
 );
 console.timeEnd("lazy func");
+
+/* 
+map, filter 계열 함수들이 가지는 결합 법칙
+- 사용하는 데이터가 무엇이든지
+- 사용하는 보조함수가 순수함수 라면 무엇이든지
+- 아래와 같이 결합한다면 둘 다 결과가 같다.
+
+[[mapping, mapping],[filtering, filtering],[mapping. mapping]]
+=
+[[mapping,filtering,mapping],[mapping,filtering, mapping]]
+*/
+console.clear();
+// 결과를 만드는 함수 reduce, take
+// reduce
+// const queryStr = (obj) =>
+//   _go(
+//     obj,
+//     Object.entries,
+//     _map(([k, v]) => `${k}=${v}`),
+//     _reduce((a, b) => `${a}&${b}`)
+//   );
+L._entries = function* (obj) {
+  for (const k in obj) yield [k, obj[k]];
+};
+const _join = _curry((sep, iter) =>
+  _reduce((a, b) => `${a}${sep}${b}`, iter)
+);
+
+const queryStr = _pipe(
+  L._entries,
+  L._map(([k, v]) => `${k}=${v}`),
+  _join("&")
+);
+log(queryStr({ limit: 10, offset: 10, type: "notice" }));
+
+function* a() {
+  yield 10;
+  yield 11;
+  yield 12;
+  yield 13;
+}
+
+log(_join("-", a()));
+
+// take, find
