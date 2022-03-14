@@ -77,3 +77,15 @@ function* a() {
 log(_join("-", a()));
 
 // take, find
+const users = [
+  { age: 32 },
+  { age: 28 },
+  { age: 24 },
+  { age: 20 },
+  { age: 36 },
+  { age: 40 },
+];
+
+const _find = (func, iter) =>
+  _go(iter, L._filter(func), _take(1), ([a]) => a);
+log(_find((u) => u.age < 30, users));
