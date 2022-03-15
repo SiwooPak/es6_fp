@@ -75,7 +75,7 @@ function* a() {
 }
 
 log(_join("-", a()));
-
+console.clear();
 // take, find
 const users = [
   { age: 32 },
@@ -86,6 +86,29 @@ const users = [
   { age: 40 },
 ];
 
-const _find = (func, iter) =>
-  _go(iter, L._filter(func), _take(1), ([a]) => a);
+const _find = _curry((func, iter) =>
+  _go(iter, L._filter(func), _take(1), ([a]) => a)
+);
 log(_find((u) => u.age < 30, users));
+_go(
+  users,
+  _map((u) => u.age),
+  _find((n) => n < 30),
+  log
+);
+
+// L._map + take로 map 만들기
+/*
+go()를 사용해서 리팩토링
+const map = _curry((func, iter) =>
+_go(L._map(func, iter), _take(Infinity))
+);
+*/
+// _pipe()를 사용해서 리팩토링
+const map = _curry(_pipe(L._map, _take(Infinity)));
+log(map((a) => a + 10, L._range(10)));
+
+// L._filter + take로 map 만들기
+const filter = _curry(_pipe(L._filter, _take(Infinity)));
+log(filter((a) => !(a % 2), _range(4)));
+log(_range(4));
