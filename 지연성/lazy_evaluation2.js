@@ -105,10 +105,13 @@ _go(L._map(func, iter), _take(Infinity))
 );
 */
 // _pipe()를 사용해서 리팩토링
-const map = _curry(_pipe(L._map, _take(Infinity)));
+const _takeAll = _take(Infinity);
+
+const map = _curry(_pipe(L._map, _takeAll));
 log(map((a) => a + 10, L._range(10)));
 
 // L._filter + take로 map 만들기
-const filter = _curry(_pipe(L._filter, _take(Infinity)));
+const filter = _curry(_pipe(L._filter, _takeAll));
 log(filter((a) => !(a % 2), _range(4)));
-log(_range(4));
+
+// L._flatten, _flatten
