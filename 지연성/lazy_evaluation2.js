@@ -119,7 +119,10 @@ const isIterable = (a) => a && a[Symbol.iterator];
 
 L._flatten = function* (iter) {
   for (const a of iter) {
-    if (isIterable(a)) for (const b of a) yield b;
+    // if (isIterable(a)) for (const b of a) yield b;
+    // 위의 코드는 yield* 를 활용하면 아래와 같이 변경 가능
+    if (isIterable(a)) yield* a;
+    // yield* iterable은 for(const val of iterable) yield val; 과 같다.
     else yield a;
   }
 };
@@ -129,3 +132,13 @@ log([...it]);
 
 const _flatten = _pipe(L._flatten, _takeAll);
 log(_flatten([[1, 2], 3, 4, [5, 6, 7]]));
+
+L._deepFlat = function* func(iter) {
+  for (const a of iter) {
+    if (isIterable(a)) yield* func(a);
+    else yield a;
+  }
+};
+
+log([...L._flatten([1, [2, [3, 4], [[5]]]])]);
+log([...L._deepFlat([1, [2, [3, 4], [[5]]]])]);
