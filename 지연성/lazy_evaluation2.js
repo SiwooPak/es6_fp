@@ -115,3 +115,17 @@ const filter = _curry(_pipe(L._filter, _takeAll));
 log(filter((a) => !(a % 2), _range(4)));
 
 // L._flatten, _flatten
+const isIterable = (a) => a && a[Symbol.iterator];
+
+L._flatten = function* (iter) {
+  for (const a of iter) {
+    if (isIterable(a)) for (const b of a) yield b;
+    else yield a;
+  }
+};
+
+let it = L._flatten([[1, 2], 3, 4, [5, 6, 7]]);
+log([...it]);
+
+const _flatten = _pipe(L._flatten, _takeAll);
+log(_flatten([[1, 2], 3, 4, [5, 6, 7]]));
