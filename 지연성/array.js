@@ -1,13 +1,4 @@
-const {
-  _go,
-  _flatten,
-  _filter,
-  L,
-  _take,
-  log,
-  _reduce,
-  add,
-} = require("../lib/fx");
+const { _go, _take, log, _reduce, add, L } = require("../lib/fx");
 
 // 2차원 배열 다루기
 const arr = [
@@ -90,3 +81,20 @@ _go(
   _take(4),
   log
 );
+
+// _map()과 _flatten() 대신 _flatmap() 사용
+_go(
+  users,
+  L._flatMap((u) => u.family),
+  L._filter((u) => u.age < 20),
+  L._map((u) => u.name),
+  _take(4),
+  log
+);
+
+// 깩체지향 프로그래밍은 데이터를 우선적으로 먼저 정리하고 메소드를 그 이후에 만듦
+// 함수형 프로그래밍은 이미 만들어진 함수가 있다면 그 함수에 맞는 데이터를 넣는 것.
+// 보다 함수가 우선적인 프로그래밍
+// _map(),_filter()등의 고차 함수와 각 데이터에 맞는 보조함수를 조합하여 원하는 결과를 만드는 프로그래밍
+// 리습(Lisp, 리스트 프로세싱) 자바스크립트의 경우 이터러블 중심 프로그래밍
+// 리습: 목록형식의 데이터를 처리하는 방법
