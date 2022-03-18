@@ -142,3 +142,45 @@ L._deepFlat = function* func(iter) {
 
 log([...L._flatten([1, [2, [3, 4], [[5]]]])]);
 log([...L._deepFlat([1, [2, [3, 4], [[5]]]])]);
+
+// L._flatMap()
+// flatten() + map() or reduce() + concat()와 동일
+log(
+  [
+    [1, 2],
+    [3, 4],
+    [5, 6, 7],
+  ].flatMap((a) => a.map((a) => a * 2))
+);
+log(
+  _flatten(
+    [
+      [1, 2],
+      [3, 4],
+      [5, 6, 7],
+    ].map((a) => a.map((a) => a * 2))
+  )
+);
+
+L._flatMap = _curry(_pipe(L._map, L._flatten));
+// const _flatMap = _pipe(L._flatMap, _takeAll)
+const _flatMap = _curry(_pipe(L._map, _flatten));
+const it2 = L._flatMap(
+  map((a) => a * a),
+  [
+    [1, 2],
+    [3, 4],
+    [5, 6, 7],
+  ]
+);
+log([...it2]);
+const it3 = L._flatMap(
+  (a) => a,
+  [
+    [1, 2],
+    [3, 4],
+    [5, 6, 7],
+  ]
+);
+log([...it3]);
+log(_flatMap(L._range, [1, 2, 3]));
