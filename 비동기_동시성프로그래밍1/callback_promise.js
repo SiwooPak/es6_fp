@@ -53,3 +53,21 @@ const n2 = delay100(10);
 go1(go1(n2, add5), log);
 // Promise는 어떠한 일을 한 결과의 상황을 일급값으로 만들어서
 // 지속적으로 어떠한 일들을 연결해나가는 것이 중요한 특징 중의 하나임.
+
+// 함수 합성 관점에서의 Promise와 모나드
+// 함수는 두 집합을 연결하여 관계를 만들어 주는 연산
+// 함수 합성 f.g
+// f(g(x))
+const g = (a) => a + 1;
+const f = (a) => a * a;
+
+// log(f(g(1)));
+// log(f(g()));
+
+Array.of(1).map(g).map(f) /*.forEach(r => log(r))*/;
+[].map(g).map(f) /*.forEach(r => log(r))*/;
+
+Promise.resolve(2).then(g).then(f) /*.then(r => log(r))*/;
+new Promise((resolve) => setTimeout(() => resolve(2), 100))
+  .then(g)
+  .then(f) /*.then(r => log(r))*/;
