@@ -64,10 +64,14 @@ const f = (a) => a * a;
 // log(f(g(1)));
 // log(f(g()));
 
+// 모나드 형태의 map()을 이용하여 함수 합성
 Array.of(1).map(g).map(f) /*.forEach(r => log(r))*/;
 [].map(g).map(f) /*.forEach(r => log(r))*/;
 
+// promise는 then()을 통해 함수 합성
 Promise.resolve(2).then(g).then(f) /*.then(r => log(r))*/;
 new Promise((resolve) => setTimeout(() => resolve(2), 100))
   .then(g)
   .then(f) /*.then(r => log(r))*/;
+
+// Klesli Composition
