@@ -69,6 +69,12 @@ Array.of(1).map(g).map(f) /*.forEach(r => log(r))*/;
 [].map(g).map(f) /*.forEach(r => log(r))*/;
 
 // promise는 then()을 통해 함수 합성
+// 대기한 상태에서 함수합성을 안전하게
+// 어떤 특정한 상황을 안전하게 함수 합성하기 위해
+// 모나드는 연속적으로 안전하게 함수를 합성하기 위한 도구
+// promise를 합성 관점에서 봤을때는
+// 비동기 상황을 보면 얼마만큼의 딜레이가 필요한 상황에서도
+// 함수를 적절한 시점의 평가해서 합성시키긴 위한 도구로써 promise를 바라볼 수 있다.
 Promise.resolve(2).then(g).then(f) /*.then(r => log(r))*/;
 new Promise((resolve) => setTimeout(() => resolve(2), 100))
   .then(g)
