@@ -1,4 +1,4 @@
-const {} = require("../lib/fx");
+const { _find } = require("../lib/fx");
 const log = console.log;
 // Promise
 // - 일급
@@ -80,4 +80,34 @@ new Promise((resolve) => setTimeout(() => resolve(2), 100))
   .then(g)
   .then(f) /*.then(r => log(r))*/;
 
-// Klesli Composition
+// Klesli Composition관점에서의 promise
+// 크레이슬리 컴포지션은 오류가 있을 수 있는 상황에서 함수합성을 안전하게 하는 하나의 규칙
+// 상태와 효과, 외부 상황에 영향을 받기 때문에
+// 들어오는 인자가 완전히 잘못된 인자여서 함수에서 오류가 나거나
+// 정확히 인자가 들어왔지만 어떤 함수가 의존하고 잇는 외부의 상태에 의해서 결과를 정확하게
+// 전달하지 못할때 사용하는 함수합성의 방법
+// f*g
+// f(g(x)) = f(g(x))
+// 특정한 규칙을 만들어서 함수 합성을 안전하게 만드는 방법
+console.clear();
+const users = [
+  { id: 1, name: "aa" },
+  { id: 2, name: "bb" },
+  { id: 3, name: "cc" },
+];
+
+// const getUserById = (id) => _find((u) => u.id === id, users);
+const getUserById = (id) =>
+  _find((u) => u.id === id, users) || Promise.reject("없어요!");
+const f1 = ({ name }) => name;
+const g1 = getUserById;
+//const fg = (id) => f1(g1(id));
+const fg = (id) =>
+  Promise.resolve(id)
+    .then(g1)
+    .then(f1)
+    .catch((a) => a);
+fg(2).then(log);
+users.pop();
+users.pop();
+fg(2).then(log);
