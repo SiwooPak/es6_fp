@@ -51,3 +51,18 @@ _go(
   _reduce(add),
   log
 );
+
+// 지연 평가 + Promise의 효율성
+_go(
+  [1, 2, 3, 4, 5, 6, 7, 8],
+  L._map((a) => {
+    log(a);
+    return new Promise.resolve(a * a);
+  }),
+  L._filter((a) => {
+    log(a);
+    return Promise.resolve(a % 2);
+  }),
+  _take(2),
+  log
+);
