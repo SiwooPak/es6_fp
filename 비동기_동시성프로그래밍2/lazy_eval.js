@@ -1,4 +1,13 @@
-const { _go, L, _takeAll, _take, log, map } = require("../lib/fx");
+const {
+  _go,
+  L,
+  _takeAll,
+  _take,
+  log,
+  map,
+  _reduce,
+  add,
+} = require("../lib/fx");
 
 // 지연평가 + Promise - L.map, map, take
 _go(
@@ -30,5 +39,15 @@ _go(
   }),
   L._map((a) => a * a),
   _take(4),
+  log
+);
+
+// _reduce에서 nop지원
+// 배열 안의 요소를 제곱해서 홀수인 숫자의 합을 구하시오
+_go(
+  [1, 2, 3, 4, 5],
+  L._map((a) => Promise.resolve(a * a)),
+  L._filter((a) => Promise.resolve(a % 2)),
+  _reduce(add),
   log
 );
