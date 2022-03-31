@@ -20,3 +20,15 @@ _go(
   map((a) => Promise.resolve(a + 10)),
   log
 );
+
+// Kleisli composition - L.filter, filter, nop, take
+_go(
+  [1, 2, 3, 4, 5, 6, 7, 8],
+  L._map((a) => Promise.resolve(a * a)),
+  L._filter((a) => {
+    return !(a % 2);
+  }),
+  L._map((a) => a * a),
+  _take(4),
+  log
+);
