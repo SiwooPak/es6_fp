@@ -9,7 +9,7 @@ const {
   add,
 } = require("../lib/fx");
 
-// 즉시 병렬적으로 평가하기
+// 즉시 병렬적으로 평가하기(C._map, C._filter)
 C._takeAll = C._take(Infinity);
 C._map = _curry(_pipe(L._map, C._takeAll));
 C._filter = _curry(_pipe(L._filter, C._takeAll));
@@ -20,8 +20,8 @@ const delay1000 = (a) =>
     setTimeout(() => resolve(a), 1000);
   });
 
-C._map((a) => delay1000(a * a), [1, 2, 3, 4]).then(log);
-C._filter((a) => delay1000(a % 2), [1, 2, 3, 4]).then(log);
+// C._map((a) => delay1000(a * a), [1, 2, 3, 4]).then(log);
+// C._filter((a) => delay1000(a % 2), [1, 2, 3, 4]).then(log);
 
 //  즉시, 지연, Promise, 병렬적 조합하기
 
@@ -29,7 +29,7 @@ C._filter((a) => delay1000(a % 2), [1, 2, 3, 4]).then(log);
 const delay500 = (a, name) =>
   new Promise((resolve) => {
     console.log(`${name}: ${a}`);
-    setTimeout(() => resolve(a), 500);
+    setTimeout(() => resolve(a), 3000);
   });
 
 console.time("");
