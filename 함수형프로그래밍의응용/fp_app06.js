@@ -1,4 +1,4 @@
-const { log, _reduce, L } = require('../lib/fx');
+const { log, _reduce, L, _go } = require('../lib/fx');
 // 명령형 습관 지우기
 // 1. reduce + 복잡한 함수 + acc 보다 map + 간단한 함수 + reduce
 const users = [
@@ -26,4 +26,22 @@ log(
 const ages = L._map(u => u.age);
 log(_reduce(add, ages(users)));
 // 2. reduce 하나보다 map + filter + reduce
+// _reduce()하나만 사용해서 구성
+log(
+  _reduce(
+    (total, u) => {
+      return u.age < 30 ? total : total + u.age;
+    },
+    0,
+    users,
+  ),
+);
+// _map, _filter, _reduce 사용해보기
+_go(
+  users,
+  ages,
+  L._filter(a => a < 30),
+  _reduce(add),
+  log,
+);
 // 3. query, queryToObject
