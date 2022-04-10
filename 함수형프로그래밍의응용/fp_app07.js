@@ -1,4 +1,13 @@
-const { log } = require('../lib/fx');
+const {
+  log,
+  L,
+  _reduce,
+  _map,
+  _reject,
+  _curry,
+  _pipe,
+  _go,
+} = require('../lib/fx');
 // query, queryToObject
 const obj1 = {
   a: 1,
@@ -26,3 +35,40 @@ function query2(obj) {
   }, '');
 }
 log(query2(obj1));
+
+// 함수형(reject, map, reduce) 사용해서 만들기
+/*
+function query3(obj) {
+  return _reduce(
+    (a, b) => `${a}&${b}`,
+    _map(
+      ([k, v]) => `${k}=${v}`,
+      _reject(([_, v]) => v === undefined, Object.entries(obj)),
+    ),
+  );
+}
+*/
+
+const _join = _curry((sep, iter) => _reduce((a, b) => `${a}${sep}${b}`, iter));
+
+const query3 = obj => {
+  return _join(
+    '&',
+    _map(
+      ([k, v]) => `${k}=${v}`,
+      _reject(([k, v]) => v === undefined, Object.entries(obj)),
+    ),
+  );
+};
+log(query3(obj1));
+
+// 좀 더 간단하게
+const query4 = obj =>
+  _go(
+    obj,
+    Object.entries,
+    L._reject(([k, v]) => v === undefined),
+    L._map(_join('=')),
+    _join('&'),
+  );
+console.log(query4(obj1));
