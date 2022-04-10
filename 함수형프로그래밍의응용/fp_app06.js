@@ -46,4 +46,3 @@ _go(
   _reduce(add),
   log,
 );
-// 3. query, queryToObject
