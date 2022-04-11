@@ -1,6 +1,7 @@
 const {
   log,
   L,
+  _join,
   _reduce,
   _map,
   _reject,
@@ -49,8 +50,6 @@ function query3(obj) {
 }
 */
 
-const _join = _curry((sep, iter) => _reduce((a, b) => `${a}${sep}${b}`, iter));
-
 const query3 = obj => {
   return _join(
     '&',
@@ -72,3 +71,13 @@ const query4 = obj =>
     _join('&'),
   );
 console.log(query4(obj1));
+
+// queryToObject
+const split = _curry((sep, str) => str.split(sep));
+const queryToObject = _pipe(
+  split('&'),
+  L._map(split('=')),
+  L._map(([k, v]) => ({ [k]: v })),
+  _reduce(Object.assign),
+);
+log(queryToObject('a=1&c=CC&d=DD'));
