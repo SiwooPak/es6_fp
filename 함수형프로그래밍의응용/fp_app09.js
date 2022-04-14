@@ -5,6 +5,7 @@ const obj1 = {
   b: 2,
   c: 3,
 };
+
 // 1. values
 _go(obj1, Object.values, _reduce(add), log);
 L._values = function* (obj) {
@@ -19,6 +20,7 @@ _go(
   _reduce(add),
   log,
 );
+
 // 2. entries
 L._entries = function* (obj) {
   for (const k in obj) yield [k, obj[k]];
@@ -32,10 +34,28 @@ _go(
   _reduce(Object.assign),
   log,
 );
-// 1. keys
 
-// 1. 어떠한 값이든 이터러블 프로그래밍으로 다루기
+// 3. keys
+L._keys = function* (obj) {
+  for (const k in obj) yield k;
+};
 
-// 1. object
+/* 
+4. 어떠한 값이든 이터러블 프로그래밍으로 다루기
+- 이터러블로 이터러블 프로그래밍
+- 객체를 제너레이터로 이용해서 이터레이터로 만들어서 이터러블 프로그래밍
+- 어떤 제너레이터든 이터레이터로 만들어 이터러블 프로그래밍
+*/
+const gen = function* (stop) {
+  let i = -1;
+  while (++i < stop) {
+    yield 10;
+    // eslint-disable-next-line no-constant-condition
+    if (i === stop - 1) yield 20 + 30;
+    yield 30;
+  }
+};
+console.log([...gen(3)]);
+// 5. object
 
-// 1. mapObject
+// 6. mapObject
