@@ -29,7 +29,7 @@ _go(obj1, L._entries, _takeAll, log);
 _go(
   obj1,
   L._entries,
-  L._filter(([_, v]) => v % 2),
+  L._filter(([, v]) => v % 2),
   L._map(([k, v]) => ({ [k]: v })),
   _reduce(Object.assign),
   log,
@@ -56,6 +56,31 @@ const gen = function* (stop) {
   }
 };
 console.log([...gen(3)]);
-// 5. object
+/* 
+5. object
+배열을 객체로 만드는 함수
+[['a', 1], ['b',2]] => { a:1. b:2 }
+*/
+// 위의 코드를 그대로 사용하였을 때
+const _object = _entries =>
+  _go(
+    _entries,
+    L._map(([k, v]) => ({ [k]: v })),
+    _reduce(Object.assign),
+  );
+// _reduce() 하나로
+const _object2 = entries =>
+  _reduce((obj, [k, v]) => ((obj[k] = v), obj), {}, entries);
+
+// Map의 자료구조 위의 함수를 통해 객체로 만들수 있음
+let m = new Map();
+m.set('a', 10);
+m.set('b', 20);
+m.set('c', 30);
+// 아무 값도 안 나오지만,
+JSON.stringify(m);
+// object함수를 사용하여 객체로 만든 다음엔 JSON객체로 바꿀수 있음
+JSON.stringify(_object2(m));
+// 위처럼 되는 이유가 Map도 이터러블 갖고 있기 때문에 object()를 사용하여 객체화시킬 수 있기 때문이다.
 
 // 6. mapObject
