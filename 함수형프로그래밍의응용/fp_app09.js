@@ -62,16 +62,21 @@ console.log([...gen(3)]);
 [['a', 1], ['b',2]] => { a:1. b:2 }
 */
 // 위의 코드를 그대로 사용하였을 때
+const a = [
+  ['a', 1],
+  ['b', 2],
+];
 const _object = _entries =>
   _go(
     _entries,
     L._map(([k, v]) => ({ [k]: v })),
     _reduce(Object.assign),
   );
+log(_object(a));
 // _reduce() 하나로
 const _object2 = entries =>
   _reduce((obj, [k, v]) => ((obj[k] = v), obj), {}, entries);
-
+log(_object2(a));
 // Map의 자료구조 위의 함수를 통해 객체로 만들수 있음
 let m = new Map();
 m.set('a', 10);
@@ -84,3 +89,15 @@ JSON.stringify(_object2(m));
 // 위처럼 되는 이유가 Map도 이터러블 갖고 있기 때문에 object()를 사용하여 객체화시킬 수 있기 때문이다.
 
 // 6. mapObject
+// [ ['a', 1], ['b',2], ['c',3] ]
+// [['a', 11], ['b', 12], ['c', 13]]
+// {a: 11}, ...
+// {a: 11, b: 12, c: 13}
+const _mapObject = (func, obj) =>
+  _go(
+    obj,
+    L._entries,
+    L._map(([k, v]) => [k, func(v)]),
+    _object,
+  );
+log(_mapObject(a => a + 10, { a: 1, b: 2, c: 3 }));
