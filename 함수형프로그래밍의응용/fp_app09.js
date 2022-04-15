@@ -1,4 +1,14 @@
-const { _go, _reduce, add, log, L, _take, _takeAll } = require('../lib/fx');
+const {
+  _go,
+  _reduce,
+  add,
+  log,
+  L,
+  _take,
+  _takeAll,
+  _map,
+  _reject,
+} = require('../lib/fx');
 // 객체를 이터러블 프로그래밍으로 다루기
 const obj1 = {
   a: 1,
@@ -101,3 +111,19 @@ const _mapObject = (func, obj) =>
     _object,
   );
 log(_mapObject(a => a + 10, { a: 1, b: 2, c: 3 }));
+
+// 7. pick
+const obj2 = { a: 1, b: 2, c: 3, d: 4, e: 5 };
+const _pick = (keys, obj) =>
+  _go(
+    keys,
+    _map(k => [k, obj[k]]),
+    _reject(([, v]) => v === undefined),
+    _object2,
+  );
+/*
+좀 더 간단하게  
+const _pick2 = (keys, obj) => _object2(_map(k => [k, obj[k]], keys));
+*/
+log(_pick(['b', 'c'], obj2));
+// {b: 2, c: 3}
