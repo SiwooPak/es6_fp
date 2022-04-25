@@ -1,4 +1,12 @@
-const { _reduce, log, _filter, _go, L, _object, _take } = require('../lib/fx');
+const {
+  _reduce,
+  log,
+  _filter,
+  _go,
+  L,
+  _object,
+  _takeAll,
+} = require('../lib/fx');
 // indexBy
 // 배열의 각 요소들의 id값을 인덱스로 매핑하여 객체로 만들어주는 함수.
 const users = [
@@ -27,7 +35,7 @@ _go(
   users2,
   L._entries,
   L._filter(([, { age }]) => age < 30),
-  _take(2),
+  _takeAll,
   _object,
   log,
 );
