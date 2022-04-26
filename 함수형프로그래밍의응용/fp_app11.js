@@ -76,10 +76,17 @@ class Collection {
 
   // 3. Symbol iterator로 제너레이터로 처리해주기
   *[Symbol.iterator]() {
-    for (const model of this._models) {
-      yield model;
-    }
+    // for (const model of this._models) {
+    //   yield model;
+    // }
+    // 좀 더 간단하게 하면
+    yield* this._models;
   }
+  /*
+  [Symbol.iterator]() {
+      return this._models[Symbol.iterator]();
+  }
+  */
 }
 
 const coll = new Collection();
@@ -108,3 +115,44 @@ _go(
 );
 
 // 3. Product, Products
+const addAll = _reduce(add);
+class Product extends Model {}
+class Products extends Collection {
+  getPrice() {
+    return _map(p => p.get('price'), this);
+  }
+
+  totalPrice() {
+    /*
+    명령형
+    let total = 0;
+    this._models.forEach(p => {
+      total += p.get('price');
+    });
+    return total;
+    */
+
+    /*
+    함수형
+    return _go(
+      this,
+      L._map(p => p.get('price')),
+      _reduce(add),
+    );
+    */
+    /* 
+    함수형 코드 더 간결하게
+    return _reduce(
+      add,
+      L._map(p => p.get('price'), this),
+    );
+    */
+    return addAll(this.getPrice());
+  }
+}
+
+const products = new Products();
+products.add(new Product({ id: 1, price: 10000 }));
+products.add(new Product({ id: 3, price: 25000 }));
+products.add(new Product({ id: 5, price: 35000 }));
+log(products.totalPrice());
