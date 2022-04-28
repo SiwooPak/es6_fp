@@ -7,8 +7,8 @@
 </head>
 <body>  
  <!-- 시간을 이터러블로 다루기 -->
- <!-- 1. _range(), _take()의 재해석 -->
 <script>
+// 1. _range(), _take()의 재해석 
 _go(
   _range(10), // <- 0~9까지의 배열
   _take(3), // 앞에서부터 3개 자르기
@@ -23,6 +23,49 @@ _go(
   L._take(3), // 최대 3개의 값을 필요하고, 최대 3번의 일을 수행함
   _each(console.log),
 );
+
+// 2. takeWhile, takeUntil
+// takeWhile(): true일때까지만 값을 가져오는 함수
+// takeUntil(): 처음으로 truthy값이 나오기전까지 값을 가져오는 함수
+_go(
+  [1,2,3,4,5,6,7,8,0,0,0],
+  _takeWhile(a => a),
+  log
+)
+
+_go(
+  [1,2,3,4,5,6,7,8,0,0,0],
+  _takeUntil(a => a),
+  log
+)
+
+_go(
+  [0, false, undefined, null, 10, 20, 30],
+  _takeUntil(a => a),
+  log
+)
+
+// 3. 할 일들을 이터리블(리스트)로 바라보기
+const track = [
+  {cars: ['철수', '영희', '철희', '영수']},
+  {cars: ['하든', '커리', '듀란트', '탐슨']},
+  {cars: ['폴', '어방', '릴라드', '맥컬럼']},
+  {cars: ['스파이더맨', '아이언맨']},
+  {cars: []},
+]
+
+_go(
+  L._range(Infinity),
+  L._map(i => track[i]),
+  L._map(({cars}) => cars),
+  _each(log),
+  L._map(_delay(2000)),
+  //_takeWhile(({cars}) => cars.length === 4),
+  // 좀 더 간결하게
+  _takeWhile(({cars : {length: l}}) => l === 4),
+  L._flat,
+  _each(log)
+)
 </script>
 </body>
 </html>
