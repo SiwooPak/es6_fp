@@ -86,7 +86,47 @@
     </script>
     3. 경고창 만들기
     - confirm
-
+    <script>
+    const Ui = {};
+    Ui.confirm = msg => new Promise( resolve => _go(
+      `
+        <div class="confirm">
+          <div class="body">
+            <div class="msg">${msg}</div>
+            <div class="buttons">
+              <button type="button" class="cancel">취소</button>
+              <button type="button" class="ok">확인</button>
+            </div>
+          </div>
+        </div>    
+      `,
+      $.el,
+      $.append($.qs('body')),
+      _tap(
+        $.find(".ok"),
+        $.on('click', e => _go(
+          e.currentTarget,
+          $.closest('.confirm'),
+          $.remove,
+          resolve
+        ))
+      ),
+      _tap(
+        $.find(".cancel"),
+        $.on('click', e => _go(
+          e.currentTarget,
+          $.closest('.confirm'),
+          $.remove,
+          resolve
+        ))
+      ),
+    ));
+    async function f() {
+      await Ui.confirm("삭제하시겠습니까?");
+      log('hi')
+    }
+    f();
+    </script>
     - Promise 활용
 
     - alert
