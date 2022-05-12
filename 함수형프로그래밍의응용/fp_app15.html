@@ -87,79 +87,73 @@
     </script>
     3. 경고창 만들기
     - confirm
+    - Promise 활용
+    - alert
     <script>
     const Ui = {};
-    Ui.confirm = msg => new Promise( resolve => _go(
+    Ui.message = ({msg, btns}) => new Promise( resolve => _go(
       `
         <div class="confirm">
           <div class="body">
             <div class="msg">${msg}</div>
             <div class="buttons">
-              <button type="button" class="cancel">취소</button>
-              <button type="button" class="ok">확인</button>
-            </div>
+              ${_strMap(btn => `
+              <button type="button" class="${btn.type}">${btn.name}</button>
+              `,btns)}
+              </div>
           </div>
         </div>    
       `,
       $.el,
       $.append($.qs('body')),
-      _tap(
-        $.find(".ok"),
+      ..._map(btn => _tap(
+        $.find(`.${btn.class}`),
         $.on('click', e => _go(
           e.currentTarget,
           $.closest('.confirm'),
           $.remove,
-          resolve
+          _ => resolve(btn.value)
         ))
-      ),
-      _tap(
-        $.find(".cancel"),
-        $.on('click', e => _go(
-          e.currentTarget,
-          $.closest('.confirm'),
-          $.remove,
-          resolve
-        ))
-      ),
+      ),btns)
     ));
-    /*
-    async function f() {
-      await Ui.confirm("삭제하시겠습니까?");
-      log('hi')
-    }
-    f();
-    */
-    _go(
-        Images.fetch(),
-        Images.tmpl,
-        $.el,
-        $.append($.qs('body')),
-        $.findAll('.remove'),
-        $.on('click', async ({currentTarget: ct}) => {
-          // if(await Ui.confirm('정말 삭제하시겠습니까?')) {
-          //   _go(
-          //     currentTarget,
-          //     $.closest('.image'),
-          //     $.remove);
-          // }
-          await Ui.confirm('정말 삭제하시겠습니까?') &&
-          _go(
-            ct,
-            $.closest('.image'),
-            $.remove
-          );
-    }));
+    
+    Ui.confirm = msg => Ui.message({
+      msg,
+      btns: [
+        {name: '취소', type: 'cancel', value: false},
+        {name: '확인', type: 'ok', value: ok}
+      ]
+    })
+    
+    Ui.alert = msg => Ui.message({
+      msg,
+      btns: [
+        {name: '확인', type: 'ok', value: true}
+      ]
+    })
     // $.on()에서 e에서 currentTarget로 구조분해한 인자로 받은 이유는
     // 평가하는 시점이 가변적으로 되기 때문에
     // e.currentTarget값이 null로 들어오기 때문에
     // 구조분해할당한 값으로 불변적으로 받아서 참조하는 값을 유지하게 한다. 
+    Ui.message({
+      msg: '삭제되었습니다',
+      btns: [{
+        name: '확인',
+        type: 'ok',
+        value: true
+      }, {
+        name: '취소',
+        type: 'cancel',
+        value: false
+      }]
+    })
     </script>
-    - Promise 활용
-
-    - alert
+    
 
     - 중복 제거
+    <script>
 
+    </script>
     4. 이미지 동시성 다루기
 
     5. 페이지 비우기
