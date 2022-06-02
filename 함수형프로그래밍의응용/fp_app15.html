@@ -46,6 +46,7 @@
       // return  _each(el => el.addEventListener('click', f), els)
       return _each(el => el.addEventListener('click',f), isIterable(els) ? els: [els]);
     }
+    $.addClass = _curry((name,el) => el.classList.add(name));
     </script>
     <script>
     const Images = {};
@@ -62,7 +63,7 @@
       <div class="images">
         ${_strMap(img =>` 
           <div class="image">
-            <div class="box"><img src="${img.url}" alt=""></div>
+            <div class="box"><img src='"lazy-src="${img.url}' class="fade" alt=""></div>
             <div class="name">${img.name}</div>  
             <div class="remove">x</div>
           </div>  
@@ -70,12 +71,21 @@
       </div>  
     `;    
 
-    /*
+   
     _go(
         Images.fetch(),
         Images.tmpl,
         $.el,
         $.append($.qs('body')),
+        _tap(
+          $.findAll('img'),
+          L._map(img => new Promise(resolve => {
+            img.onload = () => resolve(img);
+            img.src = img.getAttribute('lazy-src');
+          })),
+          C._takeAll,
+          _each($.addClass('fade-in')),
+        ),
         $.findAll('.remove'),
         $.on('click', e => _go(
           e.currentTarget,
@@ -83,7 +93,7 @@
           $.remove,
         )),
     );
-    */  
+    
     </script>
     3. 경고창 만들기
     - confirm
@@ -149,14 +159,6 @@
     })
     </script>
     
-
-    - 중복 제거
-    <script>
-
-    </script>
-    4. 이미지 동시성 다루기
-
-    5. 페이지 비우기
     </div>
    
 </body>
