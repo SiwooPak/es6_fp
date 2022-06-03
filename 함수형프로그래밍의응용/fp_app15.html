@@ -83,8 +83,20 @@
             img.onload = () => resolve(img);
             img.src = img.getAttribute('lazy-src');
           })),
-          C._takeAll,
-          _each($.addClass('fade-in')),
+          lazy => {
+            let r = L._range(Infinity);
+            return _go(
+              lazy,
+              _groupBy(_ => Math.floor(r.next().value / 4),
+              L._values,
+              L._map(L._map(f => f())),
+              L._map(C._takeAll),
+              _each(_each($.addClass('fade-in')))
+              )
+            )
+          }
+          //C._takeAll,
+          //_each($.addClass('fade-in')),
         ),
         $.findAll('.remove'),
         $.on('click', e => _go(
